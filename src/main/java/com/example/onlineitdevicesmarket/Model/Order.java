@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Min;
 @Table(name="orders")
 public class Order {
 
+    //to get existing users
     public Order(int id, User user, DeviceType deviceType, DeviceColor deviceColor, int quantity) {
         this.id = id;
         this.user = user;
@@ -19,18 +20,28 @@ public class Order {
     public Order() {
     }
 
+    public Order(User user, DeviceType deviceType, DeviceColor deviceColor, int quantity, double price) {
+        this.user = user;
+        this.deviceType = deviceType;
+        this.deviceColor = deviceColor;
+        this.quantity = quantity;
+        this.price = price;
+    }
+
+
     public double getPrice() {
         return price;
     }
 
     public double setPrice(DeviceType dtype) {
         if(dtype==DeviceType.ANDROID)
-        {this.price = 900;}
+        {price = 900;}
 
         if(dtype==DeviceType.IPHONE)
         {
-            this.price = 950;
+            price = 950;
         }
+        return price;
     }
 
     public int getQuantity() {
@@ -90,7 +101,10 @@ public class Order {
     @JoinColumn(name="user_id", nullable = false)
     private User user; //inlcude user class
 
+    @Enumerated(EnumType.STRING)
     private DeviceType deviceType;
+
+    @Enumerated(EnumType.STRING)
     private DeviceColor deviceColor;
 
     @Min(0)
