@@ -88,7 +88,7 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name="user_id", nullable = false)
-    private User user;
+    private User user; //inlcude user class
 
     private DeviceType deviceType;
     private DeviceColor deviceColor;
