@@ -1,8 +1,8 @@
 package com.example.onlineitdevicesmarket.Model;
 
 import jakarta.persistence.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import javax.management.relation.Role;
 
 @Entity
 @Table(name="users")
