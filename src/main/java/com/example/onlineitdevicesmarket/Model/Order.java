@@ -9,7 +9,7 @@ public class Order {
 
     //to get existing users
     public Order(int id, User user, DeviceType deviceType, DeviceColor deviceColor, int quantity) {
-        this.id = id;
+        this.orderid = id;
         this.user = user;
         this.deviceType = deviceType;
         this.deviceColor = deviceColor;
@@ -76,12 +76,12 @@ public class Order {
         this.user = user;
     }
 
-    public int getId() {
-        return id;
+    public int getOrderid() {
+        return orderid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setOrderid(int id) {
+        this.orderid = id;
     }
 
     public enum DeviceType{
@@ -95,7 +95,7 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int orderid;
 
     @ManyToOne
     @JoinColumn(name="user_id", nullable = false)
@@ -111,10 +111,4 @@ public class Order {
     private int quantity;
 
     private double price;
-
-
-
-
-
-
 }
