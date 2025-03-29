@@ -9,30 +9,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class User {
 
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int uId;
+
     private String name;
-    private String email;
+
+    @Id
+    @Column(nullable = false, unique = true)
+    private String email; // Using email as the primary key
     private String password;
 
     public User() {
     }
 
-    public User(String name, String email, String password, Role role) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-    }
-
-    public int getuId() {
-        return uId;
-    }
-
-    public void setuId(int uId) {
-        this.uId = uId;
-    }
 
     public String getName() {
         return name;
@@ -57,7 +44,9 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-
+    public enum Role {
+        USER, ADMIN
+    }
     public Role getRole() {
         return role;
     }
@@ -66,16 +55,14 @@ public class User {
         this.role = role;
     }
 
-    public enum Role {
-        USER, ADMIN
-    }
+
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
     //constructor to get existing user
-    public User(int id, String name, String email, String password, Role role) {
-        this.uId = id;
+    public User(String name, String email, String password, Role role) {
+
         this.name = name;
         this.email = email;
         this.password = password;

@@ -4,10 +4,10 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 
 @Entity
-@Table(name="orders")
+@Table(name = "orders")
 public class Order {
 
-    //to get existing users
+    // Constructor for existing orders
     public Order(int id, User user, DeviceType deviceType, DeviceColor deviceColor, int quantity) {
         this.orderid = id;
         this.user = user;
@@ -28,17 +28,15 @@ public class Order {
         this.price = price;
     }
 
-
     public double getPrice() {
         return price;
     }
 
     public double setPrice(DeviceType dtype) {
-        if(dtype==DeviceType.ANDROID)
-        {price = 900;}
-
-        if(dtype==DeviceType.IPHONE)
-        {
+        if (dtype == DeviceType.ANDROID) {
+            price = 900;
+        }
+        if (dtype == DeviceType.IPHONE) {
             price = 950;
         }
         return price;
@@ -84,22 +82,21 @@ public class Order {
         this.orderid = id;
     }
 
-    public enum DeviceType{
+    public enum DeviceType {
         ANDROID, IPHONE
     }
 
-    public enum DeviceColor{
+    public enum DeviceColor {
         BLACK, WHITE, RED
     }
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int orderid;
+    private Integer orderid;
 
     @ManyToOne
-    @JoinColumn(name="user_id", nullable = false)
-    private User user; //inlcude user class
+    @JoinColumn(name = "user_id", referencedColumnName = "email", nullable = false)
+    private User user; // Reference User.email instead of User.uId
 
     @Enumerated(EnumType.STRING)
     private DeviceType deviceType;
