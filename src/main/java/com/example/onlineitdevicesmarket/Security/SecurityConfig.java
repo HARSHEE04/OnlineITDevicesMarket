@@ -21,26 +21,41 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests(auth-> auth
-                        .requestMatchers("/register", "/login").permitAll()
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/", "/register", "/login").permitAll() // Allow main, register, and login pages
                         .requestMatchers("/order", "/receipt").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/order", true)
+                        .successHandler((request, response, authentication) -> {
+                            // Redirect users based on role
+                            authentication.getAuthorities().forEach(grantedAuthority -> {
+                                try {
+                                    if (grantedAuthority.getAuthority().equals("ROLE_ADMIN")) {
+                                        response.sendRedirect("/admin"); // Admins go to admin page
+                                    } else {
+                                        response.sendRedirect("/order"); // Users go to order page
+                                    }
+                                } catch (Exception e) {
+                                    throw new RuntimeException(e);
+                                }
+                            });
+                        })
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/")
                         .permitAll()
                 );
 
         return http.build();
     }
 
-
-
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(); // Use BCryptPasswordEncoder for password encoding
+        return new BCryptPasswordEncoder(); // Secure password hashing
     }
 }
-

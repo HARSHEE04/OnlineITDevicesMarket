@@ -20,6 +20,11 @@ import java.util.Optional;
 @Controller
 public class MainController {
 
+    @GetMapping("/")
+    public String mainPage() {
+        return "index"; // Renders index.html
+    }
+
     private final OrderService orderService;
     private final UserRepo userRepo; // Inject UserRepo to fetch users
 
