@@ -14,7 +14,7 @@ public class Order {
         this.deviceType = deviceType;
         this.deviceColor = deviceColor;
         this.quantity = quantity;
-        this.price = setPrice(deviceType);
+        this.setPrice();
     }
 
     public Order() {
@@ -25,22 +25,23 @@ public class Order {
         this.deviceType = deviceType;
         this.deviceColor = deviceColor;
         this.quantity = quantity;
-        this.price = price;
+        this.setPrice();
     }
 
     public double getPrice() {
         return price;
     }
 
-    public double setPrice(DeviceType dtype) {
-        if (dtype == DeviceType.ANDROID) {
-            price = 900;
+    private void setPrice() {
+        if (this.deviceType == DeviceType.ANDROID) {
+            this.price = 900 * this.quantity;
+        } else if (this.deviceType == DeviceType.IPHONE) {
+            this.price = 950 * this.quantity;
+        } else {
+            this.price = 0; // Default case, should not happen
         }
-        if (dtype == DeviceType.IPHONE) {
-            price = 950;
-        }
-        return price;
     }
+
 
     public int getQuantity() {
         return quantity;
@@ -48,6 +49,7 @@ public class Order {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+        this.setPrice(); // Update price when quantity changes
     }
 
     public DeviceColor getDeviceColor() {
@@ -64,6 +66,7 @@ public class Order {
 
     public void setDeviceType(DeviceType deviceType) {
         this.deviceType = deviceType;
+        this.setPrice(); // Update price when device type changes
     }
 
     public User getUser() {
@@ -95,8 +98,9 @@ public class Order {
     private Integer orderid;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "email", nullable = false)
-    private User user; // Reference User.email instead of User.uId
+    @JoinColumn(name = "user_email", referencedColumnName = "email", nullable = false)
+    private User user;
+
 
     @Enumerated(EnumType.STRING)
     private DeviceType deviceType;

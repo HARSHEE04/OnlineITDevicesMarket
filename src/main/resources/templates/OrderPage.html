@@ -1,10 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Order Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+            text-align: center;
+        }
+        form {
+            display: inline-block;
+            text-align: left;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+        input, select, button {
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+        }
+        .submit-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .form-section {
+            font-weight: bold;
+            margin-top: 15px;
+        }
+        .radio-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+    </style>
 </head>
 <body>
 
+<h2>Place Your Order</h2>
+
+<form th:action="@{/order}" method="post" th:object="${order}">
+    <div class="form-section">Device Type:</div>
+    <div class="radio-group">
+        <label>
+            <input type="radio" th:field="*{deviceType}" value="ANDROID" required> Android ($900)
+        </label>
+        <label>
+            <input type="radio" th:field="*{deviceType}" value="IPHONE"> iPhone ($950)
+        </label>
+    </div>
+
+    <div class="form-section">Device Color:</div>
+    <select th:field="*{deviceColor}" required>
+        <option value="BLACK">Black</option>
+        <option value="WHITE">White</option>
+        <option value="RED">Red</option>
+    </select>
+
+    <div class="form-section">Quantity:</div>
+    <input type="number" th:field="*{quantity}" min="1" required>
+
+    <button type="submit" class="submit-btn">Submit Order</button>
+</form>
+
 </body>
 </html>
+
+

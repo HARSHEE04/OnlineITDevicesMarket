@@ -1,10 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Receipt</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+            text-align: center;
+        }
+        .container {
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background: #f9f9f9;
+            display: inline-block;
+            text-align: left;
+        }
+        .section {
+            font-weight: bold;
+            margin-top: 15px;
+        }
+        .btn {
+            margin-top: 15px;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+        }
+        .btn-order {
+            background-color: #4CAF50;
+        }
+        .btn-history {
+            background-color: #007bff;
+        }
+    </style>
 </head>
 <body>
+
+<h2>Order Receipt</h2>
+
+<div class="container">
+    <div class="section">Username:</div>
+    <p th:text="${order.user.name}"></p> <!-- Display username passed from controller -->
+
+    <div class="section">Order ID:</div>
+    <p th:text="${order.orderid}"></p>
+
+    <div class="section">Device Type:</div>
+    <p th:text="${order.deviceType}"></p>
+
+    <div class="section">Device Color:</div>
+    <p th:text="${order.deviceColor}"></p>
+
+    <div class="section">Quantity:</div>
+    <p th:text="${order.quantity}"></p>
+
+    <div class="section">Total Price:</div>
+    <p th:text="${order.price} + ' CAD'"></p>
+
+    <a href="/order" class="btn btn-order">Place Another Order</a>
+    <a href="/order-history" class="btn btn-history">View Order History</a>
+</div>
 
 </body>
 </html>
