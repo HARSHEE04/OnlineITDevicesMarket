@@ -4,14 +4,17 @@ import com.example.onlineitdevicesmarket.Model.Order;
 import com.example.onlineitdevicesmarket.Model.User;
 import com.example.onlineitdevicesmarket.Service.OrderService;
 import com.example.onlineitdevicesmarket.Repository.UserRepo;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -65,4 +68,28 @@ public class MainController {
         return "RecieptPage"; // Redirect to receipt page after success
     }
 
+    @GetMapping("/order-history")
+    public String viewOrderHistory(@RequestParam String email, Model model) {
+        List<Order> orders = orderService.getOrdersByUserEmail(email);
+
+        if (orders.isEmpty()) {
+            model.addAttribute("message", "No previous orders found.");
+        } else {
+            model.addAttribute("orders", orders);
+        }
+
+        return "OrderHistoryPage";
+    }
+
+    @PreAuthorize("hasRole('ADMIN')") // Restrict access to ADMINs only
+    @GetMapping("/admin")
+    public String adminDashboard(Model model) {
+        List<Order> orders = orderService.getAllOrders();
+        double totalSales = orderService.getTotalSales();
+
+        model.addAttribute("orders", orders);
+        model.addAttribute("totalSales", totalSales);
+
+        return "AdminPage"; // Loads AdminPage.html
+    }
 }

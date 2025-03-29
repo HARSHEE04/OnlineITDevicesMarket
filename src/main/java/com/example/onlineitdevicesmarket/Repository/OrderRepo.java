@@ -10,6 +10,7 @@ import java.util.Optional;
 @Repository
 public interface OrderRepo extends JpaRepository<Order, Integer> {
     Optional<Order> findByOrderid(int orderid);
+    List<Order> findByUserEmail(String email);
 
 }
 

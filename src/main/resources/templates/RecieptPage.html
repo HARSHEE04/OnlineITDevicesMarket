@@ -62,8 +62,11 @@
     <div class="section">Total Price:</div>
     <p th:text="${order.price} + ' CAD'"></p>
 
-    <a href="/order" class="btn btn-order">Place Another Order</a>
-    <a href="/order-history" class="btn btn-history">View Order History</a>
+    <form action="/order" method="get">
+        <button type="submit">Add Another Order</button>
+    </form>
+    <a th:href="@{/order-history(email=${order.user.email})}" class="btn btn-history">View Order History</a>
+
 </div>
 
 </body>

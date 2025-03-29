@@ -1,10 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Admin Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 50px; text-align: center; }
+        .container { padding: 20px; border: 1px solid #ccc; border-radius: 5px; background: #f9f9f9; }
+        .section { font-weight: bold; margin-top: 15px; }
+        .table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .table th, .table td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        .table th { background-color: #007bff; color: white; }
+        .total-sales { font-size: 20px; font-weight: bold; margin-top: 20px; color: #28a745; }
+    </style>
 </head>
 <body>
+
+<h2>Admin Dashboard</h2>
+
+<div class="container">
+    <h3>Total Sales: <span class="total-sales" th:text="${totalSales} + ' CAD'"></span></h3>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>User</th>
+            <th>Device Type</th>
+            <th>Device Color</th>
+            <th>Quantity</th>
+            <th>Price (CAD)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${orders}">
+            <td th:text="${order.orderid}"></td>
+            <td th:text="${order.user.email}"></td>
+            <td th:text="${order.deviceType}"></td>
+            <td th:text="${order.deviceColor}"></td>
+            <td th:text="${order.quantity}"></td>
+            <td th:text="${order.price}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 
 </body>
 </html>

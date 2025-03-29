@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Order History</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+            text-align: center;
+        }
+        .container {
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background: #f9f9f9;
+            display: inline-block;
+            text-align: left;
+        }
+        .order {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background: #fff;
+        }
+        .btn {
+            margin-top: 15px;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+        }
+        .btn-home {
+            background-color: #007bff;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Order History</h2>
+
+<div class="container">
+    <p th:if="${message}" th:text="${message}" style="color: red;"></p>
+
+    <div th:each="order : ${orders}" class="order">
+        <p><strong>Order ID:</strong> <span th:text="${order.orderid}"></span></p>
+        <p><strong>Device Type:</strong> <span th:text="${order.deviceType}"></span></p>
+        <p><strong>Device Color:</strong> <span th:text="${order.deviceColor}"></span></p>
+        <p><strong>Quantity:</strong> <span th:text="${order.quantity}"></span></p>
+        <p><strong>Total Price:</strong> <span th:text="${order.price} + ' CAD'"></span></p>
+    </div>
+
+    <a href="/order" class="btn btn-home">Place New Order</a>
+</div>
+
+</body>
+</html>
