@@ -1,73 +1,172 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Receipt</title>
+    <title>Order Receipt</title>
     <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3a0ca3;
+            --success-color: #4bb543;
+            --light-gray: #f8f9fa;
+            --dark-gray: #343a40;
+            --border-color: #e0e0e0;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            margin: 50px;
-            text-align: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light-gray);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--dark-gray);
         }
-        .container {
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background: #f9f9f9;
-            display: inline-block;
-            text-align: left;
-        }
-        .section {
-            font-weight: bold;
-            margin-top: 15px;
-        }
-        .btn {
-            margin-top: 15px;
-            padding: 10px;
-            border: none;
-            cursor: pointer;
+
+        .receipt-container {
             width: 100%;
-            display: block;
+            max-width: 500px;
+            padding: 2rem;
+        }
+
+        .receipt-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            padding: 2rem;
             text-align: center;
+        }
+
+        .receipt-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .receipt-title {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .receipt-subtitle {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .receipt-detail {
+            display: flex;
+            justify-content: space-between;
+            margin: 1rem 0;
+            padding: 0.75rem 0;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .detail-label {
+            font-weight: 500;
+            color: #555;
+        }
+
+        .detail-value {
+            font-weight: 400;
+        }
+
+        .total-price {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin: 1.5rem 0;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
             text-decoration: none;
+            text-align: center;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
             color: white;
         }
-        .btn-order {
-            background-color: #4CAF50;
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
         }
-        .btn-history {
-            background-color: #007bff;
+
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #3a9a35;
+        }
+
+        .thank-you {
+            margin-top: 1.5rem;
+            font-style: italic;
+            color: #666;
         }
     </style>
 </head>
 <body>
+<div class="receipt-container">
+    <div class="receipt-card">
+        <div class="receipt-header">
+            <h1 class="receipt-title">Order Confirmation</h1>
+            <p class="receipt-subtitle">Thank you for your purchase!</p>
+        </div>
 
-<h2>Order Receipt</h2>
+        <div class="receipt-detail">
+            <span class="detail-label">Order ID:</span>
+            <span class="detail-value" th:text="${order.orderid}"></span>
+        </div>
 
-<div class="container">
-    <div class="section">Username:</div>
-    <p th:text="${order.user.name}"></p> <!-- Display username passed from controller -->
+        <div class="receipt-detail">
+            <span class="detail-label">Customer:</span>
+            <span class="detail-value" th:text="${order.user.name}"></span>
+        </div>
 
-    <div class="section">Order ID:</div>
-    <p th:text="${order.orderid}"></p>
+        <div class="receipt-detail">
+            <span class="detail-label">Device Type:</span>
+            <span class="detail-value" th:text="${order.deviceType}"></span>
+        </div>
 
-    <div class="section">Device Type:</div>
-    <p th:text="${order.deviceType}"></p>
+        <div class="receipt-detail">
+            <span class="detail-label">Device Color:</span>
+            <span class="detail-value" th:text="${order.deviceColor}"></span>
+        </div>
 
-    <div class="section">Device Color:</div>
-    <p th:text="${order.deviceColor}"></p>
+        <div class="receipt-detail">
+            <span class="detail-label">Quantity:</span>
+            <span class="detail-value" th:text="${order.quantity}"></span>
+        </div>
 
-    <div class="section">Quantity:</div>
-    <p th:text="${order.quantity}"></p>
+        <div class="total-price" th:text="${order.price} + ' CAD'"></div>
 
-    <div class="section">Total Price:</div>
-    <p th:text="${order.price} + ' CAD'"></p>
+        <div class="btn-group">
+            <form action="/order" method="get">
+                <button type="submit" class="btn btn-success">Place Another Order</button>
+            </form>
+            <a th:href="@{/order-history(email=${order.user.email})}" class="btn btn-primary">View Order History</a>
+        </div>
 
-    <form action="/order" method="get">
-        <button type="submit">Add Another Order</button>
-    </form>
-    <a th:href="@{/order-history(email=${order.user.email})}" class="btn btn-history">View Order History</a>
 
+    </div>
 </div>
-
 </body>
 </html>

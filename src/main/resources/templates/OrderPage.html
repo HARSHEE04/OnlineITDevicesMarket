@@ -1,72 +1,165 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Order Page</title>
+    <title>Place Order</title>
     <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3a0ca3;
+            --light-gray: #f8f9fa;
+            --dark-gray: #343a40;
+            --border-color: #e0e0e0;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            margin: 50px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light-gray);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--dark-gray);
+        }
+
+        .order-container {
+            width: 100%;
+            max-width: 500px;
+            padding: 2rem;
+        }
+
+        .order-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            padding: 2rem;
+        }
+
+        .page-title {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
             text-align: center;
         }
-        form {
-            display: inline-block;
-            text-align: left;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background: #f9f9f9;
+
+        .form-group {
+            margin-bottom: 1.5rem;
         }
-        input, select, button {
-            margin: 10px 0;
-            padding: 10px;
-            width: 100%;
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+            color: #555;
         }
-        .submit-btn {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        .form-section {
-            font-weight: bold;
-            margin-top: 15px;
-        }
+
         .radio-group {
             display: flex;
-            gap: 10px;
+            gap: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .radio-option {
+            display: flex;
             align-items: center;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex: 1;
+        }
+
+        .radio-option:hover {
+            border-color: var(--primary-color);
+        }
+
+        .radio-option input {
+            margin-right: 0.75rem;
+        }
+
+        select, input[type="number"] {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+        }
+
+        select:focus, input[type="number"]:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 0.5rem;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .price-tag {
+            margin-left: auto;
+            color: var(--primary-color);
+            font-weight: 500;
         }
     </style>
 </head>
 <body>
+<div class="order-container">
+    <div class="order-card">
+        <h1 class="page-title">Place Your Order</h1>
 
-<h2>Place Your Order</h2>
+        <form th:action="@{/order}" method="post" th:object="${order}">
+            <div class="form-group">
+                <label class="form-label">Device Type</label>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" th:field="*{deviceType}" value="ANDROID" required>
+                        Android
+                        <span class="price-tag">$900</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" th:field="*{deviceType}" value="IPHONE">
+                        iPhone
+                        <span class="price-tag">$950</span>
+                    </label>
+                </div>
+            </div>
 
-<form th:action="@{/order}" method="post" th:object="${order}">
-    <div class="form-section">Device Type:</div>
-    <div class="radio-group">
-        <label>
-            <input type="radio" th:field="*{deviceType}" value="ANDROID" required> Android ($900)
-        </label>
-        <label>
-            <input type="radio" th:field="*{deviceType}" value="IPHONE"> iPhone ($950)
-        </label>
+            <div class="form-group">
+                <label class="form-label" for="deviceColor">Device Color</label>
+                <select id="deviceColor" th:field="*{deviceColor}" required>
+                    <option value="" disabled selected>Select a color</option>
+                    <option value="BLACK">Black</option>
+                    <option value="WHITE">White</option>
+                    <option value="RED">Red</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="quantity">Quantity</label>
+                <input type="number" id="quantity" th:field="*{quantity}" min="1" required>
+            </div>
+
+            <button type="submit" class="submit-btn">Place Order</button>
+        </form>
     </div>
-
-    <div class="form-section">Device Color:</div>
-    <select th:field="*{deviceColor}" required>
-        <option value="BLACK">Black</option>
-        <option value="WHITE">White</option>
-        <option value="RED">Red</option>
-    </select>
-
-    <div class="form-section">Quantity:</div>
-    <input type="number" th:field="*{quantity}" min="1" required>
-
-    <button type="submit" class="submit-btn">Submit Order</button>
-</form>
-
+</div>
 </body>
 </html>
-
-

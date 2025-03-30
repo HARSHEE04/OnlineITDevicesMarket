@@ -5,53 +5,70 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 50px;
-            text-align: center;
-        }
-        .container {
+            margin: 0;
             padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background: #f9f9f9;
-            display: inline-block;
+            text-align: center;
+            background: #f4f4f4;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .orders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            padding: 20px;
+        }
+
+        .order {
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             text-align: left;
         }
-        .order {
-            margin-bottom: 15px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            background: #fff;
+
+        .order p {
+            margin: 5px 0;
         }
+
         .btn {
-            margin-top: 15px;
-            padding: 10px;
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 20px;
             border: none;
+            border-radius: 5px;
             cursor: pointer;
             text-decoration: none;
             color: white;
+            font-weight: bold;
         }
+
         .btn-home {
             background-color: #007bff;
         }
     </style>
 </head>
 <body>
-
 <h2>Order History</h2>
 
 <div class="container">
     <p th:if="${message}" th:text="${message}" style="color: red;"></p>
 
-    <div th:each="order : ${orders}" class="order">
-        <p><strong>Order ID:</strong> <span th:text="${order.orderid}"></span></p>
-        <p><strong>Device Type:</strong> <span th:text="${order.deviceType}"></span></p>
-        <p><strong>Device Color:</strong> <span th:text="${order.deviceColor}"></span></p>
-        <p><strong>Quantity:</strong> <span th:text="${order.quantity}"></span></p>
-        <p><strong>Total Price:</strong> <span th:text="${order.price} + ' CAD'"></span></p>
+    <div class="orders-grid">
+        <div th:each="order : ${orders}" class="order">
+            <p><strong>Order ID:</strong> <span th:text="${order.orderid}"></span></p>
+            <p><strong>Device Type:</strong> <span th:text="${order.deviceType}"></span></p>
+            <p><strong>Device Color:</strong> <span th:text="${order.deviceColor}"></span></p>
+            <p><strong>Quantity:</strong> <span th:text="${order.quantity}"></span></p>
+            <p><strong>Total Price:</strong> <span th:text="${order.price} + ' CAD'"></span></p>
+        </div>
     </div>
 
     <a href="/order" class="btn btn-home">Place New Order</a>
 </div>
-
 </body>
 </html>

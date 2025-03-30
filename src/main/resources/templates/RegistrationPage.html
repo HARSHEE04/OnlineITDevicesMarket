@@ -3,77 +3,215 @@
 <head>
     <title>Register</title>
     <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3a0ca3;
+            --success-color: #4bb543;
+            --light-gray: #f8f9fa;
+            --dark-gray: #343a40;
+            --text-light: #6c757d;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            margin: 50px;
-            text-align: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light-gray);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--dark-gray);
+            position: relative;
+            overflow: hidden;
         }
-        form {
-            display: inline-block;
-            text-align: left;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background: #f9f9f9;
-        }
-        input, select, button {
-            margin: 10px 0;
-            padding: 10px;
+
+
+
+        .register-container {
             width: 100%;
+            max-width: 450px;
+            padding: 2.5rem;
         }
-        .login-btn {
-            margin-top: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
+
+        .register-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            padding: 2.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .register-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .register-header {
+            margin-bottom: 2rem;
+        }
+
+        .register-title {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .register-subtitle {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark-gray);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-weight: 500;
             cursor: pointer;
-            display: none; /* Initially hidden */
+            transition: all 0.3s;
+            border: none;
+            font-size: 1rem;
         }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(67, 97, 238, 0.1);
+        }
+
+        .message {
+            margin: 1rem 0;
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
         .success-message {
-            color: green;
-            font-weight: bold;
-            margin-bottom: 15px;
-            display: none; /* Initially hidden */
+            background-color: rgba(75, 181, 67, 0.1);
+            color: var(--success-color);
+        }
+
+        .error-message {
+            background-color: #ffebee;
+            color: #f44336;
+            margin-bottom: 1rem;
+        }
+
+        .login-link {
+            margin-top: 1.5rem;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .login-link a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
         }
     </style>
-    <script>
-        function showLoginButton() {
-            document.getElementById("successMessage").style.display = "block";
-            document.getElementById("loginBtn").style.display = "block";
-        }
-    </script>
 </head>
 <body>
 
-<h2>Register</h2>
 
-<form th:action="@{/register}" method="POST" th:object="${user}" onsubmit="showLoginButton();">
-    <label>Name:</label>
-    <input type="text" th:field="*{name}" required /><br>
+<div class="register-container">
+    <div class="register-card">
+        <div class="register-header">
+            <h1 class="register-title">Create Account</h1>
+            <p class="register-subtitle">Join us to get started</p>
+        </div>
 
-    <label>Email:</label>
-    <input type="email" th:field="*{email}" required /><br>
 
-    <label>Password:</label>
-    <input type="password" th:field="*{password}" required /><br>
+        <div th:if="${error}" class="error-message" th:text="${error}"></div>
 
-    <label>Role:</label>
-    <select th:field="*{role}">
-        <option value="USER">User</option>
-        <option value="ADMIN">Admin</option>
-    </select><br>
 
-    <button type="submit">Register</button>
-</form>
+        <div th:if="${success}" class="success-message">
+            Registration successful! You can now log in.
+        </div>
 
-<!-- Success message and login button (Hidden initially) -->
-<p id="successMessage" class="success-message">Registration successful! You can now log in.</p>
+        <form th:action="@{/register}" method="post" th:object="${user}">
+            <div class="form-group">
+                <label for="name" class="form-label">Full Name</label>
+                <input type="text" id="name" th:field="*{name}" class="form-control" required placeholder="Enter your full name">
+            </div>
 
-<form th:action="@{/login}" method="get">
-    <button type="submit" id="loginBtn" class="login-btn">Go to Login</button>
-</form>
+            <div class="form-group">
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" id="email" th:field="*{email}" class="form-control" required placeholder="Enter your email">
+            </div>
+
+            <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password" th:field="*{password}" class="form-control" required placeholder="Create a password">
+            </div>
+
+            <div class="form-group">
+                <label for="role" class="form-label">Account Type</label>
+                <select id="role" th:field="*{role}" class="form-control">
+                    <option value="USER">Standard User</option>
+                    <option value="ADMIN">Administrator</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+
+        <div class="login-link">
+            Already have an account? <a th:href="@{/login}">Sign in</a>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>
-
-
